@@ -34,11 +34,8 @@ void game_render(struct Game* game)
     {
         cube_render(game->rend, &game->cube);
     }
-    
-    for (int i = 0; i < 4; ++i)
-    {
-        game->cube.points[i].z -= 0.01f;
-    }
+
+    cube_move(&game->cube, -0.1f);
 
     SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
     SDL_RenderPresent(game->rend);

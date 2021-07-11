@@ -26,6 +26,15 @@ void cube_render(SDL_Renderer* rend, struct Cube* cube)
 }
 
 
+void cube_move(struct Cube* cube, float z)
+{
+    cube->points[0].z += z;
+    cube->points[1].z += z;
+    cube->points[2].z += z;
+    cube->points[3].z += z;
+}
+
+
 static SDL_FPoint project_point(struct Point* p)
 {
     SDL_FPoint display;
