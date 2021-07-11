@@ -1,4 +1,5 @@
 #include "cubefield.h"
+#include <time.h>
 
 
 struct Game* game_init()
@@ -15,8 +16,9 @@ struct Game* game_init()
     game->cube_list = 0;
     game->cubes_num = 0;
 
-    append_cube(game, -0.5f, 0.f, 10.f);
-    append_cube(game, 0.5f, 0.f, 10.f);
+    srand(time(0));
+    append_cube(game, (float)randint(-100, 100) / 100.f, 0.f, 10.f);
+    append_cube(game, (float)randint(-100, 100) / 100.f, 0.f, 10.f);
 
     return game;
 }
@@ -103,8 +105,8 @@ static struct Cube create_cube(float x, float y, float z)
 }
 
 
-static int randint(int min, int max)
+inline static int randint(int min, int max)
 {
-    return 0;
+    return (rand() % (max - min + 1)) + min;
 }
 
