@@ -146,26 +146,6 @@ static void append_cube(struct Game* game, float x, float y, float z)
 }
 
 
-static void erase_cube(struct Game* game, int index)
-{
-    struct Cube* tmp = malloc((game->cubes_num - 1) * sizeof(struct Cube));
-
-    if (index != 0)
-    {
-        memcpy(tmp, game->cube_list, index * sizeof(struct Cube));
-    }
-
-    if (index != game->cubes_num - 1)
-    {
-        memcpy(tmp + index, game->cube_list + index + 1, (game->cubes_num - index - 1) * sizeof(struct Cube));
-    }
-
-    free(game->cube_list);
-    game->cube_list = tmp;
-    --game->cubes_num;
-}
-
-
 static struct Cube create_cube(float x, float y, float z)
 {
     float size = 0.2f;
