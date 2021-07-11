@@ -12,6 +12,9 @@ void cube_render(SDL_Renderer* rend, struct Cube* cube)
     float rate = (p3.x - p0.x) / (p3.y - p0.y);
     float offset = 0.f;
 
+    if ((p1.x + offset) - (p0.x - offset) > 800)
+        return;
+
     for (int i = p0.y; i < p3.y; ++i)
     {
         offset += rate;
