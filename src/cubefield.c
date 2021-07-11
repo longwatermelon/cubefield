@@ -36,14 +36,13 @@ void game_render(struct Game* game)
     {
         struct Cube* cube = &game->cube_list[i];
 
+        if (cube->points[0].z < 0.f)
+            continue;
+
         if (cube->points[0].z > 0.f && cube->points[0].z - game->speed <= 0.f && cube->points[0].x <= 0.f && cube->points[1].x >= 0.f)
             printf("game over\n"); 
 
-        if (cube->points[0].z > 0.f)
-        {
-            cube_render(game->rend, cube);
-        }
-
+        cube_render(game->rend, cube);
         cube_move(cube, 0.f, 0.f, -game->speed);
     }
 
