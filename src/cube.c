@@ -3,7 +3,7 @@
 
 void cube_render(SDL_Renderer* rend, struct Cube* cube)
 {
-    SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(rend, 200, 200, 200, 255);
     
     SDL_FPoint p3 = center_and_scale(project_point(&cube->points[3]), 800, 800);
     SDL_FPoint p0 = center_and_scale(project_point(&cube->points[0]), 800, 800);
