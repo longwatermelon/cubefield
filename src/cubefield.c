@@ -29,11 +29,14 @@ void game_render(struct Game* game)
 {
     SDL_RenderClear(game->rend);
 
+    SDL_SetRenderDrawColor(game->rend, 255, 255, 255, 255);
+    SDL_RenderDrawLine(game->rend, 0, 420, 800, 420);
+
     for (size_t i = 0; i < game->cubes_num; ++i)
     {
         struct Cube* cube = &game->cube_list[i];
 
-        if (cube->points[0].z > 0.f && cube->points[0].z - game->speed <= 0.f && cube->points[0].z >= 0.f && cube->points[0].x <= 0.f && cube->points[1].x >= 0.f)
+        if (cube->points[0].z > 0.f && cube->points[0].z - game->speed <= 0.f && cube->points[0].x <= 0.f && cube->points[1].x >= 0.f)
             printf("game over\n"); 
 
         if (cube->points[0].z > 0.f)
