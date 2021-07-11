@@ -17,6 +17,7 @@ void cube_render(SDL_Renderer* rend, struct Cube* cube)
         }
         else
         {
+            // draw line between first and last cube point because the cube will only render the other three edges otherwise
             prev_point = center_and_scale(project_point(&cube->points[3]), 800, 800);
             SDL_FPoint current = center_and_scale(project_point(&cube->points[0]), 800, 800);
 
@@ -38,6 +39,7 @@ void cube_move(struct Cube* cube, float z)
 static SDL_FPoint project_point(struct Point* p)
 {
     SDL_FPoint display;
+    // take shortcut because i dont need the customizability of a projection matrix
     display.x = p->x / p->z;
     display.y = p->y / p->z;
 
