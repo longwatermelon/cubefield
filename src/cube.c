@@ -27,12 +27,14 @@ void cube_render(SDL_Renderer* rend, struct Cube* cube)
 }
 
 
-void cube_move(struct Cube* cube, float z)
+void cube_move(struct Cube* cube, float x, float y, float z)
 {
-    cube->points[0].z += z;
-    cube->points[1].z += z;
-    cube->points[2].z += z;
-    cube->points[3].z += z;
+    for (int i = 0; i < 4; ++i)
+    {
+        cube->points[i].x += x;
+        cube->points[i].y += y;
+        cube->points[i].z += z;
+    }
 }
 
 

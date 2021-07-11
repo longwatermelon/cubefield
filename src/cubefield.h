@@ -18,7 +18,7 @@ struct Game* game_init();
 void game_quit(struct Game* game);
 
 void game_render(struct Game* game);
-int game_handle_events();
+int game_handle_events(struct Game* game);
 
 static void append_cube(struct Game* game, float x, float y, float z);
 static struct Cube create_cube(float x, float y, float z);

@@ -37,7 +37,7 @@ void game_render(struct Game* game)
             cube_render(game->rend, cube);
         }
 
-        cube_move(cube, -0.02f);
+        cube_move(cube, 0.f, 0.f, -0.02f);
     }
 
     SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
@@ -45,7 +45,7 @@ void game_render(struct Game* game)
 }
 
 
-int game_handle_events()
+int game_handle_events(struct Game* game)
 {
     SDL_Event evt;
     while (SDL_PollEvent(&evt))
@@ -55,6 +55,21 @@ int game_handle_events()
         case SDL_QUIT:
             return 0;
             break;
+        case SDL_KEYDOWN:
+        {
+            switch (evt.key.keysym.sym)
+            {
+            case SDLK_RIGHT:
+                for (size_t i = 0; i < game->cubes_num; ++i)
+                    cube_move(&game->cube_list[i], -0.1f, 0.f, 0.f);
+                break;
+            case SDLK_LEFT:
+                for (size_t i = 0; i < game->cubes_num; ++i)
+                    cube_move(&game->cube_list[i], 0.1f, 0.f, 0.f);
+                break;
+            }
+        }
+        break;
         }
     }
 
