@@ -17,8 +17,11 @@ struct Game* game_init()
     game->cubes_num = 0;
 
     srand(time(0));
-    append_cube(game, (float)randint(-100, 100) / 100.f, 0.f, 10.f);
-    append_cube(game, (float)randint(-100, 100) / 100.f, 0.f, 10.f);
+    append_cube(game, (float)randint(-200, 200) / 100.f, 0.f, 10.f);
+    append_cube(game, (float)randint(-200, 200) / 100.f, 0.f, 10.f);
+
+    game->speed = 0.02f;
+    game->x_velocity = 0.f;
 
     return game;
 }
@@ -37,8 +40,15 @@ void game_render(struct Game* game)
             cube_render(game->rend, cube);
         }
 
-        cube_move(cube, 0.f, 0.f, -0.02f);
+        cube_move(cube, 0.f, 0.f, -game->speed);
     }
+
+    if (randint(0, 100) < 20)
+    {
+        append_cube(game, (float)randint(-1000, 1000) / 100.f, 0.f, 10.f);
+    }
+
+    game->speed += 0.00001f;
 
     SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
     SDL_RenderPresent(game->rend);
@@ -60,18 +70,30 @@ int game_handle_events(struct Game* game)
             switch (evt.key.keysym.sym)
             {
             case SDLK_RIGHT:
-                for (size_t i = 0; i < game->cubes_num; ++i)
-                    cube_move(&game->cube_list[i], -0.1f, 0.f, 0.f);
+                game->x_velocity = 0.03f;
                 break;
             case SDLK_LEFT:
-                for (size_t i = 0; i < game->cubes_num; ++i)
-                    cube_move(&game->cube_list[i], 0.1f, 0.f, 0.f);
+                game->x_velocity = -0.03f;
+                break;
+            }
+        }
+        break;
+        case SDL_KEYUP:
+        {
+            switch (evt.key.keysym.sym)
+            {
+            case SDLK_RIGHT:
+            case SDLK_LEFT:
+                game->x_velocity = 0;
                 break;
             }
         }
         break;
         }
     }
+
+    for (size_t i = 0; i < game->cubes_num; ++i)
+        cube_move(&game->cube_list[i], -game->x_velocity, 0.f, 0.f);
 
     return 1;
 }

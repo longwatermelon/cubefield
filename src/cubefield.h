@@ -12,6 +12,10 @@ struct Game
 
     struct Cube* cube_list;
     size_t cubes_num;
+
+    float speed;
+
+    float x_velocity;
 };
 
 struct Game* game_init();
