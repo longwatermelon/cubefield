@@ -1,11 +1,16 @@
 #ifndef CUBEFIELD_H
 #define CUBEFIELD_H
+
+#include "cube.h"
 #include <SDL.h>
+
 
 struct Game
 {
     SDL_Window* window;
     SDL_Renderer* rend;
+
+    struct Cube cube;
 };
 
 struct Game* game_init();

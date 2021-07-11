@@ -9,6 +9,8 @@ add_executable(cubefield
     src/main.c
     src/cubefield.h
     src/cubefield.c
+    src/cube.h
+    src/cube.c
 )
 
 target_link_libraries(cubefield PRIVATE SDL2::SDL2 SDL2::SDL2main)

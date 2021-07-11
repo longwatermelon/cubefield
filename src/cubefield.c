@@ -12,6 +12,15 @@ struct Game* game_init()
     SDL_RenderClear(game->rend);
     SDL_RenderPresent(game->rend);
 
+    game->cube = (struct Cube) {
+        {
+            { 0.f, 0.f, 10.f },
+            { 1.f, 0.f, 10.f },
+            { 1.f, 1.f, 10.f },
+            { 0.f, 1.f, 10.f }
+        }
+    };
+
     return game;
 }
 
@@ -20,6 +29,16 @@ void game_render(struct Game* game)
 {
     SDL_RenderClear(game->rend);
 
+    // only render anything in front of the camera
+    if (game->cube.points[0].z > 0.0f)
+    {
+        cube_render(game->rend, &game->cube);
+    }
+    
+    for (int i = 0; i < 4; ++i)
+    {
+        game->cube.points[i].z -= 0.01f;
+    }
 
     SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
     SDL_RenderPresent(game->rend);
