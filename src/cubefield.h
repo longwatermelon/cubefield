@@ -20,6 +20,8 @@ struct Game
     float x_velocity;
 
     int alive;
+
+    size_t score;
 };
 
 struct Game* game_init();
@@ -32,6 +34,7 @@ static void append_cube(struct Game* game, float x, float y, float z);
 static struct Cube create_cube(float x, float y, float z);
 
 static SDL_Texture* render_text(SDL_Renderer* rend, TTF_Font* font, const char* text, SDL_Color color);
+static void display_text(struct Game* game, SDL_Point pos, const char* text, SDL_Color color);
 
 inline static int randint(int min, int max);
 

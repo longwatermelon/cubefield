@@ -19,10 +19,12 @@ struct Game* game_init()
     game->cube_list = 0;
     game->cubes_num = 0;
 
-    game->speed = 0.02f;
+    game->speed = 0.05f;
     game->x_velocity = 0.f;
 
     game->alive = 1;
+
+    game->score = 0;
 
     srand(time(0));
 
@@ -44,7 +46,7 @@ void game_render(struct Game* game)
         if (cube->points[0].z > 0.f && cube->points[0].z - game->speed <= 0.f && cube->points[0].x <= 0.f && cube->points[1].x >= 0.f)
         {
             game->alive = 0;
-            game->speed = 0.02f;
+            game->speed = 0.05f;
             game->x_velocity = 0.f;
         }
 
@@ -85,7 +87,22 @@ void game_render(struct Game* game)
     }
 
     if (game->alive)
+    {
         game->speed += 0.00004f;
+        static int accumulator = 0;
+        ++accumulator;
+
+        if (accumulator >= 10)
+        {
+            ++game->score;
+            accumulator = 0;
+        }
+    }
+
+    int length = snprintf(0, 0, "%ld", game->score);
+    char* score = malloc(length + 1);
+    snprintf(score, length + 1, "%ld", game->score);
+    display_text(game, (SDL_Point){ 20, 10 }, score, (SDL_Color){ 255, 255, 255 });
 
     if (!game->alive)
     {
@@ -97,18 +114,11 @@ void game_render(struct Game* game)
 
         SDL_SetRenderDrawBlendMode(game->rend, SDL_BLENDMODE_NONE);
 
-        SDL_Texture* tex = render_text(game->rend, game->font, "Game over", (SDL_Color) { 255, 255, 255 });
-        SDL_Rect tmp = { 350, 300 };
-        TTF_SizeText(game->font, "Game over", &tmp.w, &tmp.h);
-        SDL_RenderCopy(game->rend, tex, 0, &tmp);
-        SDL_DestroyTexture(tex);
-
-        tex = render_text(game->rend, game->font, "Press space to try again", (SDL_Color) { 255, 255, 255 });
-        tmp = (SDL_Rect){ 300, 400 };
-        TTF_SizeText(game->font, "Press space to try again", &tmp.w, &tmp.h);
-        SDL_RenderCopy(game->rend, tex, 0, &tmp);
-        SDL_DestroyTexture(tex);
+        display_text(game, (SDL_Point){ 350, 300 }, "Game over", (SDL_Color){ 255, 255, 255 });
+        display_text(game, (SDL_Point){ 300, 400 }, "Press space to try again", (SDL_Color){ 255, 255, 255 });
     }
+
+    free(score);
 
     SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
     SDL_RenderPresent(game->rend);
@@ -144,6 +154,7 @@ int game_handle_events(struct Game* game)
                     free(game->cube_list);
                     game->cube_list = 0;
                     game->cubes_num = 0;
+                    game->score = 0;
                 }
                 break;
             }
@@ -225,6 +236,16 @@ static SDL_Texture* render_text(SDL_Renderer* rend, TTF_Font* font, const char* 
     SDL_FreeSurface(surf);
 
     return tex;
+}
+
+
+static void display_text(struct Game* game, SDL_Point pos, const char* text, SDL_Color color)
+{
+    SDL_Texture* tex = render_text(game->rend, game->font, text, color);
+    SDL_Rect tmp = { pos.x, pos.y };
+    TTF_SizeText(game->font, text, &tmp.w, &tmp.h);
+    SDL_RenderCopy(game->rend, tex, 0, &tmp);
+    SDL_DestroyTexture(tex);
 }
 
 
