@@ -12,14 +12,11 @@ struct Game* game_init()
     SDL_RenderClear(game->rend);
     SDL_RenderPresent(game->rend);
 
-    game->cube = (struct Cube) {
-        {
-            { 0.f, 0.f, 10.f },
-            { 1.f, 0.f, 10.f },
-            { 1.f, 1.f, 10.f },
-            { 0.f, 1.f, 10.f }
-        }
-    };
+    game->cube_list = 0;
+    game->cubes_num = 0;
+
+    append_cube(game);
+    append_cube(game);
 
     return game;
 }
@@ -29,13 +26,17 @@ void game_render(struct Game* game)
 {
     SDL_RenderClear(game->rend);
 
-    // only render anything in front of the camera
-    if (game->cube.points[0].z > 0.0f)
+    for (size_t i = 0; i < game->cubes_num; ++i)
     {
-        cube_render(game->rend, &game->cube);
-    }
+        struct Cube* cube = &game->cube_list[i];
 
-    cube_move(&game->cube, -0.1f);
+        if (cube->points[0].z > 0.f)
+        {
+            cube_render(game->rend, cube);
+        }
+
+        cube_move(cube, -0.02f);
+    }
 
     SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
     SDL_RenderPresent(game->rend);
@@ -61,9 +62,41 @@ int game_handle_events()
 
 void game_quit(struct Game* game)
 {
+    free(game->cube_list);
+
     SDL_DestroyRenderer(game->rend);
     SDL_DestroyWindow(game->window);
 
     SDL_Quit();
+}
+
+
+static void append_cube(struct Game* game)
+{
+    if (game->cube_list)
+    {
+        ++game->cubes_num;
+        game->cube_list = realloc(game->cube_list, game->cubes_num * sizeof(struct Cube));
+        game->cube_list[game->cubes_num - 1] = create_cube(0.f, 0.f, 10.f);
+    }
+    else
+    {
+        game->cubes_num = 1;
+        game->cube_list = malloc(sizeof(struct Cube));
+        game->cube_list[0] = create_cube(0.f, 0.f, 10.f);
+    }
+}
+
+
+static struct Cube create_cube(float x, float y, float z)
+{
+    return (struct Cube) {
+        {
+            { x - 0.5f, y - 0.5f, z },
+            { x + 0.5f, y - 0.5f, z },
+            { x + 0.5f, y + 0.5f, z },
+            { x - 0.5f, y + 0.5f, z }
+        }
+    };
 }
 
