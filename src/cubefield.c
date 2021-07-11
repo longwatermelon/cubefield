@@ -16,12 +16,10 @@ struct Game* game_init()
     game->cube_list = 0;
     game->cubes_num = 0;
 
-    srand(time(0));
-    append_cube(game, (float)randint(-200, 200) / 100.f, 0.f, 10.f);
-    append_cube(game, (float)randint(-200, 200) / 100.f, 0.f, 10.f);
-
     game->speed = 0.02f;
     game->x_velocity = 0.f;
+
+    srand(time(0));
 
     return game;
 }
@@ -35,6 +33,9 @@ void game_render(struct Game* game)
     {
         struct Cube* cube = &game->cube_list[i];
 
+        if (cube->points[0].z > 0.f && cube->points[0].z - game->speed <= 0.f && cube->points[0].z >= 0.f && cube->points[0].x <= 0.f && cube->points[1].x >= 0.f)
+            printf("game over\n"); 
+
         if (cube->points[0].z > 0.f)
         {
             cube_render(game->rend, cube);
@@ -45,10 +46,10 @@ void game_render(struct Game* game)
 
     if (randint(0, 100) < 20)
     {
-        append_cube(game, (float)randint(-1000, 1000) / 100.f, 0.f, 10.f);
+        append_cube(game, (float)randint(-1000, 1000) / 100.f, 0.4f, 10.f);
     }
 
-    game->speed += 0.00001f;
+    game->speed += 0.00004f;
 
     SDL_SetRenderDrawColor(game->rend, 0, 0, 0, 255);
     SDL_RenderPresent(game->rend);
