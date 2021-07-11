@@ -20,8 +20,9 @@ void game_quit(struct Game* game);
 void game_render(struct Game* game);
 int game_handle_events();
 
-static void append_cube(struct Game* game);
+static void append_cube(struct Game* game, float x, float y, float z);
 static struct Cube create_cube(float x, float y, float z);
+static int randint(int min, int max);
 
 #endif
 

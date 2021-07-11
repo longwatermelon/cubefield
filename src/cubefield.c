@@ -15,8 +15,8 @@ struct Game* game_init()
     game->cube_list = 0;
     game->cubes_num = 0;
 
-    append_cube(game);
-    append_cube(game);
+    append_cube(game, -0.5f, 0.f, 10.f);
+    append_cube(game, 0.5f, 0.f, 10.f);
 
     return game;
 }
@@ -71,32 +71,40 @@ void game_quit(struct Game* game)
 }
 
 
-static void append_cube(struct Game* game)
+static void append_cube(struct Game* game, float x, float y, float z)
 {
     if (game->cube_list)
     {
         ++game->cubes_num;
         game->cube_list = realloc(game->cube_list, game->cubes_num * sizeof(struct Cube));
-        game->cube_list[game->cubes_num - 1] = create_cube(0.f, 0.f, 10.f);
+        game->cube_list[game->cubes_num - 1] = create_cube(x, y, z);
     }
     else
     {
         game->cubes_num = 1;
         game->cube_list = malloc(sizeof(struct Cube));
-        game->cube_list[0] = create_cube(0.f, 0.f, 10.f);
+        game->cube_list[0] = create_cube(x, y, z);
     }
 }
 
 
 static struct Cube create_cube(float x, float y, float z)
 {
+    float size = 0.2f;
+
     return (struct Cube) {
         {
-            { x - 0.5f, y - 0.5f, z },
-            { x + 0.5f, y - 0.5f, z },
-            { x + 0.5f, y + 0.5f, z },
-            { x - 0.5f, y + 0.5f, z }
+            { x - size, y - size, z },
+            { x + size, y - size, z },
+            { x + size, y + size, z },
+            { x - size, y + size, z }
         }
     };
+}
+
+
+static int randint(int min, int max)
+{
+    return 0;
 }
 
