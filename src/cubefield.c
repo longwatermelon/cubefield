@@ -36,13 +36,6 @@ void game_render(struct Game* game)
     {
         struct Cube* cube = &game->cube_list[i];
 
-        if (cube->points[0].z < 0.f)
-        {
-            erase_cube(game, i);
-            --i;
-            continue;
-        }
-
         if (cube->points[0].z > 0.f && cube->points[0].z - game->speed <= 0.f && cube->points[0].x <= 0.f && cube->points[1].x >= 0.f)
             printf("game over\n"); 
 
@@ -52,7 +45,26 @@ void game_render(struct Game* game)
 
     if (randint(0, 100) < 20)
     {
-        append_cube(game, (float)randint(-1000, 1000) / 100.f, 0.4f, 10.f);
+        int reused_cube = 0;
+
+        for (size_t i = 0; i < game->cubes_num; ++i)
+        {
+            if (game->cube_list[i].points[0].z < 0.f)
+            {
+                cube_move(&game->cube_list[i],
+                    -game->cube_list[i].points[0].x + (float)randint(-1000, 1000) / 100.f,
+                    0.f,
+                    10.f - game->cube_list[i].points[0].z
+                );
+
+                reused_cube = 1;
+                
+                break;
+            }
+        }
+
+        if (!reused_cube)
+            append_cube(game, (float)randint(-1000, 1000) / 100.f, 0.4f, 10.f);
     }
 
     game->speed += 0.00004f;

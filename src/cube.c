@@ -4,33 +4,12 @@
 void cube_render(SDL_Renderer* rend, struct Cube* cube)
 {
     SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-    /* SDL_FPoint prev_point; */
-
-    /* for (int i = 0; i < 4; ++i) */
-    /* { */
-    /*     if (i - 1 >= 0) */
-    /*     { */
-    /*         prev_point = center_and_scale(project_point(&cube->points[i - 1]), 800, 800); */
-    /*         SDL_FPoint current = center_and_scale(project_point(&cube->points[i]), 800, 800); */
-
-    /*         SDL_RenderDrawLine(rend, prev_point.x, prev_point.y, current.x, current.y); */
-    /*     } */
-    /*     else */
-    /*     { */
-    /*         // draw line between first and last cube point because the cube will only render the other three edges otherwise */
-    /*         prev_point = center_and_scale(project_point(&cube->points[3]), 800, 800); */
-    /*         SDL_FPoint current = center_and_scale(project_point(&cube->points[0]), 800, 800); */
-
-    /*         SDL_RenderDrawLine(rend, prev_point.x, prev_point.y, current.x, current.y); */
-    /*     } */
-    /* } */
-
+    
     SDL_FPoint p3 = center_and_scale(project_point(&cube->points[3]), 800, 800);
     SDL_FPoint p0 = center_and_scale(project_point(&cube->points[0]), 800, 800);
     SDL_FPoint p1 = center_and_scale(project_point(&cube->points[1]), 800, 800);
 
     float rate = (p3.x - p0.x) / (p3.y - p0.y);
-
     float offset = 0.f;
 
     for (int i = p0.y; i < p3.y; ++i)
