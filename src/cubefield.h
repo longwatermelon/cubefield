@@ -25,6 +25,8 @@ void game_render(struct Game* game);
 int game_handle_events(struct Game* game);
 
 static void append_cube(struct Game* game, float x, float y, float z);
+static void erase_cube(struct Game* game, int index);
+
 static struct Cube create_cube(float x, float y, float z);
 inline static int randint(int min, int max);
 

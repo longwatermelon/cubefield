@@ -37,7 +37,11 @@ void game_render(struct Game* game)
         struct Cube* cube = &game->cube_list[i];
 
         if (cube->points[0].z < 0.f)
+        {
+            erase_cube(game, i);
+            --i;
             continue;
+        }
 
         if (cube->points[0].z > 0.f && cube->points[0].z - game->speed <= 0.f && cube->points[0].x <= 0.f && cube->points[1].x >= 0.f)
             printf("game over\n"); 
@@ -127,6 +131,26 @@ static void append_cube(struct Game* game, float x, float y, float z)
         game->cube_list = malloc(sizeof(struct Cube));
         game->cube_list[0] = create_cube(x, y, z);
     }
+}
+
+
+static void erase_cube(struct Game* game, int index)
+{
+    struct Cube* tmp = malloc((game->cubes_num - 1) * sizeof(struct Cube));
+
+    if (index != 0)
+    {
+        memcpy(tmp, game->cube_list, index * sizeof(struct Cube));
+    }
+
+    if (index != game->cubes_num - 1)
+    {
+        memcpy(tmp + index, game->cube_list + index + 1, (game->cubes_num - index - 1) * sizeof(struct Cube));
+    }
+
+    free(game->cube_list);
+    game->cube_list = tmp;
+    --game->cubes_num;
 }
 
 
