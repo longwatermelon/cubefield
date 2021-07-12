@@ -1,6 +1,8 @@
 # cubefield
 Cubefield clone
 
+Supports Linux and Windows, not tested on mac but it probably works there too
+
 # Building
 ```
 mkdir build
