@@ -36,6 +36,9 @@ static struct Cube create_cube(float x, float y, float z);
 static SDL_Texture* render_text(SDL_Renderer* rend, TTF_Font* font, const char* text, SDL_Color color);
 static void display_text(struct Game* game, SDL_Point pos, const char* text, SDL_Color color);
 
+static void reset_data(struct Game* game);
+inline static void move_cube_to_horizon(struct Cube* cube);
+
 inline static int randint(int min, int max);
 
 #endif

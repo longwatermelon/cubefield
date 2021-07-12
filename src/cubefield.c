@@ -17,14 +17,7 @@ struct Game* game_init()
     game->font = TTF_OpenFont("res/font.ttf", 16);
 
     game->cube_list = 0;
-    game->cubes_num = 0;
-
-    game->speed = 0.05f;
-    game->x_velocity = 0.f;
-
-    game->alive = 1;
-
-    game->score = 0;
+    reset_data(game);
 
     srand(time(0));
 
@@ -55,11 +48,7 @@ void game_render(struct Game* game)
 
         if (cube->points[0].z < 0.f)
         {
-            cube_move(&game->cube_list[i],
-                -game->cube_list[i].points[0].x + (float)randint(-1000, 1000) / 100.f,
-                0.f,
-                10.f - game->cube_list[i].points[0].z
-            );
+            move_cube_to_horizon(&game->cube_list[i]);
         }
     }
 
@@ -71,12 +60,7 @@ void game_render(struct Game* game)
         {
             if (game->cube_list[i].points[0].z < 0.f)
             {
-                cube_move(&game->cube_list[i],
-                    -game->cube_list[i].points[0].x + (float)randint(-1000, 1000) / 100.f,
-                    0.f,
-                    10.f - game->cube_list[i].points[0].z
-                );
-
+                move_cube_to_horizon(&game->cube_list[i]);
                 reused_cube = 1;
                 break;
             }
@@ -150,11 +134,7 @@ int game_handle_events(struct Game* game)
             case SDLK_SPACE:
                 if (!game->alive)
                 {
-                    game->alive = 1;
-                    free(game->cube_list);
-                    game->cube_list = 0;
-                    game->cubes_num = 0;
-                    game->score = 0;
+                    reset_data(game);
                 }
                 break;
             }
@@ -246,6 +226,31 @@ static void display_text(struct Game* game, SDL_Point pos, const char* text, SDL
     TTF_SizeText(game->font, text, &tmp.w, &tmp.h);
     SDL_RenderCopy(game->rend, tex, 0, &tmp);
     SDL_DestroyTexture(tex);
+}
+
+
+static void reset_data(struct Game* game)
+{
+    game->alive = 1;
+
+    if (game->cube_list)
+        free(game->cube_list);
+
+    game->cube_list = 0;
+    game->cubes_num = 0;
+    game->score = 0;
+    game->x_velocity = 0.f;
+    game->speed = 0.05f;
+}
+
+
+inline static void move_cube_to_horizon(struct Cube* cube)
+{
+    cube_move(cube,
+        -cube->points[0].x + (float)randint(-1000, 1000) / 100.f,
+        0.f,
+        10.f - cube->points[0].z
+    );
 }
 
 
