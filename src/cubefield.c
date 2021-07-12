@@ -100,8 +100,8 @@ void game_render(struct Game* game)
     }
 
     int length = snprintf(0, 0, "%ld", game->score);
-    char* score = malloc(length + 1);
-    snprintf(score, length + 1, "%ld", game->score);
+    char* score = malloc(length + 7 + 1);
+    snprintf(score, length + 7 + 1, "Score: %ld", game->score);
     display_text(game, (SDL_Point){ 20, 10 }, score, (SDL_Color){ 255, 255, 255 });
 
     if (!game->alive)
