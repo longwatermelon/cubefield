@@ -30,7 +30,7 @@ void game_render(struct Game* game)
     SDL_RenderClear(game->rend);
 
     SDL_SetRenderDrawColor(game->rend, 255, 255, 255, 255);
-    SDL_RenderDrawLine(game->rend, 0, 420, 800, 420);
+    SDL_RenderDrawLine(game->rend, 0, 415, 800, 415);
 
     for (size_t i = 0; i < game->cubes_num; ++i)
     {
@@ -52,7 +52,7 @@ void game_render(struct Game* game)
         }
     }
 
-    if (randint(0, 100) < 10 && game->cubes_num < 50)
+    if (randint(0, 100) < 15 && game->cubes_num < 75)
     {
         int reused_cube = 0;
 
@@ -67,7 +67,7 @@ void game_render(struct Game* game)
         }
 
         if (!reused_cube)
-            append_cube(game, (float)randint(-1000, 1000) / 100.f, 0.4f, 10.f);
+            append_cube(game, (float)randint(-1000, 1000) / 100.f, 0.4f, 15.f);
     }
 
     if (game->alive)
@@ -249,7 +249,7 @@ inline static void move_cube_to_horizon(struct Cube* cube)
     cube_move(cube,
         -cube->points[0].x + (float)randint(-1000, 1000) / 100.f,
         0.f,
-        10.f - cube->points[0].z
+        15.f - cube->points[0].z
     );
 }
 
