@@ -20,6 +20,7 @@ struct Game
     float x_velocity;
 
     int alive;
+    int render_fill_cubes;
 
     size_t score;
 };

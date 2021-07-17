@@ -17,6 +17,7 @@ struct Game* game_init()
     game->font = TTF_OpenFont("res/font.ttf", 16);
 
     game->cube_list = 0;
+    game->render_fill_cubes = 1;
     reset_data(game);
 
     srand(time(0));
@@ -43,7 +44,11 @@ void game_render(struct Game* game)
             game->x_velocity = 0.f;
         }
 
-        cube_render(game->rend, cube);
+        if (game->render_fill_cubes)
+            cube_render(game->rend, cube);
+        else
+            cube_render_wireframe(game->rend, cube);
+
         cube_move(cube, 0.f, 0.f, -game->speed);
 
         if (cube->points[0].z < 0.f)
@@ -136,6 +141,9 @@ int game_handle_events(struct Game* game)
                 {
                     reset_data(game);
                 }
+                break;
+            case SDLK_r:
+                game->render_fill_cubes = (game->render_fill_cubes ? 0 : 1);
                 break;
             }
         }

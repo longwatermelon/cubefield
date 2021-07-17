@@ -16,6 +16,8 @@ struct Cube
 };
 
 void cube_render(SDL_Renderer* rend, struct Cube* cube);
+void cube_render_wireframe(SDL_Renderer* rend, struct Cube* cube);
+
 void cube_move(struct Cube* cube, float x, float y, float z);
 
 static SDL_FPoint project_point(struct Point* p);
